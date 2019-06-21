@@ -29,7 +29,7 @@
 
 /* C Standard includes. */
 #include <stdbool.h>
-#include <string.h.>
+#include <string.h>
 
 /* Set up logging for this demo. */
 #include "iot_demo_logging.h"
@@ -92,7 +92,7 @@
 /* Size in bytes of the User Buffer used to store the internal connection context. The size presented here accounts for
    storage of the internal connection context. The minimum size can be found in extern const unint32_t connectionUserBufferMinimumSize. */
 #ifndef IOT_DEMO_HTTPS_CONN_BUFFER_SIZE
-    #define IOT_DEMO_HTTPS_CONN_BUFFER_SIZE         ( 256 )
+    #define IOT_DEMO_HTTPS_CONN_BUFFER_SIZE         ( 300 )
 #endif
 
 /* Size in bytes of the user buffer used to store the internal request context and HTTP request header lines. 
@@ -206,7 +206,7 @@ int RunHttpsSyncDemo( bool awsIotMqttMode,
     ( void )pNetworkServerInfo;
 
     /* HTTPS Client library return status. */
-    IotHttpsReturnCode_t httpsClientStatus;
+    IotHttpsReturnCode_t httpsClientStatus = IOT_HTTPS_OK;
 
     /* Configurations for the HTTPS connection. */
     IotHttpsConnectionInfo_t connConfig = { 0 };
@@ -319,7 +319,10 @@ int RunHttpsSyncDemo( bool awsIotMqttMode,
     reqConfig.reqUserBuffer.bufferLen = sizeof(_pReqUserBuffer);
     reqConfig.respUserBuffer.pBuffer = _pRespUserBuffer;
     reqConfig.respUserBuffer.bufferLen = sizeof(_pRespUserBuffer);
+    reqConfig.isAsync = false;
     reqConfig.pSyncInfo = &syncInfo;
+    /* We will implicitly connect in the first call to IotHttpsClient_SendSync(). */
+    reqConfig.pConnInfo = &connConfig;
 
     /* Initialize the HTTPS library. */
     httpsClientStatus = IotHttpsClient_Init();
@@ -334,14 +337,6 @@ int RunHttpsSyncDemo( bool awsIotMqttMode,
     if( httpsClientStatus != IOT_HTTPS_OK )
     {
         IotLogError("An error occurred in IotHttpsClient_InitializeRequest() with error code: %d", httpsClientStatus);
-        IOT_SET_AND_GOTO_CLEANUP( EXIT_FAILURE );
-    }
-
-    /* Connect to the S3 server. */
-    httpsClientStatus = IotHttpsClient_Connect( &connHandle, &connConfig );
-    if( httpsClientStatus != IOT_HTTPS_OK )
-    {
-        IotLogError("An error occurred in IotHttpsClient_Connect() with error code: %d", httpsClientStatus);
         IOT_SET_AND_GOTO_CLEANUP( EXIT_FAILURE );
     }
 
@@ -361,7 +356,7 @@ int RunHttpsSyncDemo( bool awsIotMqttMode,
         IOT_SET_AND_GOTO_CLEANUP( EXIT_FAILURE );
     }
 
-    /* Send the request synchronously. */
+    /* Send the request synchronously. This will also create an implicit connection.*/
     httpsClientStatus = IotHttpsClient_SendSync( &connHandle, reqHandle, &respHandle );
     if( httpsClientStatus != IOT_HTTPS_OK )
     {
@@ -382,7 +377,7 @@ int RunHttpsSyncDemo( bool awsIotMqttMode,
     httpsClientStatus = IotHttpsClient_ReadHeader( respHandle, 
         CONTENT_RANGE_HEADER_FIELD, 
         contentRangeValStr, 
-        strlen(contentRangeValStr) );
+        sizeof(contentRangeValStr) );
     fileSizeStr = strstr( contentRangeValStr, "/" );
     if(fileSizeStr == NULL)
     {
@@ -442,6 +437,7 @@ int RunHttpsSyncDemo( bool awsIotMqttMode,
         IotLogInfo("Now requesting Range: %s.", rangeValueStr);
         /* A new response handle is returned from IotHttpsClient_SendSync(). We reuse the respHandle variable because
            the last response was already processed fully.  */
+
         httpsClientStatus = IotHttpsClient_SendSync( &connHandle, reqHandle, &respHandle );
         if( httpsClientStatus != IOT_HTTPS_OK )
         {
@@ -472,6 +468,8 @@ int RunHttpsSyncDemo( bool awsIotMqttMode,
 
         /* The response has been fully received. */
         IotLogInfo( "Response return code: %d", respStatus );
+        /* The logging buffer may not fit all of the response body received and the output on the console will be truncated
+           to the first configLOGGING_MAX_MESSAGE_LENGTH number of characters. */
         IotLogInfo( "Response Body: \r\n%.*s", contentLength, _pRespBodyBuffer );
 
         /* We increment by the contentLength because the server may not have sent us the range we request. */

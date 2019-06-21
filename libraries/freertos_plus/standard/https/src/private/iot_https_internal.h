@@ -217,13 +217,17 @@ typedef enum IotHttpsResponseBufferState {
  */
 typedef struct _httpsConnection
 {
-    IotNetworkInterface_t * pNetworkInterface;   /**< @brief Network interface with calls for connect, disconnect, send, and receive. */
-    void *pNetworkConnection;                    /**< @brief Pointer to the network connection to use pNetworkInterface calls on. */
-    IotSemaphore_t connSem;                      /**< @brief Binary semaphore to lock the connection if a request/response is currently in progress. */
-    bool nonPersistent;                          /**< @brief Non persistent flag to indicate closing the connection immediately after receiving the request. */
-    IotSemaphore_t rxStartSem;                   /**< @brief Semaphore indicating that data on the network is ready to read. */
-    IotSemaphore_t rxFinishSem;                  /**< @brief Semaphore indicating that the data on the network is done being read. */
-    uint32_t timeout;                            /**< @brief Timeout for a connection and waiting for a response from the network. */
+    IotNetworkInterface_t * pNetworkInterface;  /**< @brief Network interface with calls for connect, disconnect, send, and receive. */
+    void *pNetworkConnection;                   /**< @brief Pointer to the network connection to use pNetworkInterface calls on. */
+    IotSemaphore_t connSem;                     /**< @brief Binary semaphore to lock the connection if a request/response is currently in progress. */
+    bool nonPersistent;                         /**< @brief Non persistent flag to indicate closing the connection immediately after receiving the request. */
+    IotSemaphore_t rxStartSem;                  /**< @brief Semaphore indicating that data on the network is ready to read. */
+    IotSemaphore_t rxFinishSem;                 /**< @brief Semaphore indicating that the data on the network is done being read. */
+    uint32_t timeout;                           /**< @brief Timeout for a connection and waiting for a response from the network. */
+    bool isConnected;                           /**< @brief true if a connection was successful most recently on this context. We have not way of knowing if the 
+                                                            serving closed the connection on us because that error is unique to the underlying TLS layer. This is set
+                                                            to false initially, set to true for a successful intentional call to connect, and then set to false only
+                                                            after an explicit disconnect with a non-persistent request or a call to @ref https_client_function_disconnect. */
 } _httpsConnection_t;
 
 /**

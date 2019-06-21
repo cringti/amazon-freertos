@@ -29,6 +29,7 @@
 
 /* C Standard includes. */
 #include <stdbool.h>
+#include <string.h>
 
 /* Set up logging for this demo. */
 #include "iot_demo_logging.h"
@@ -495,7 +496,7 @@ static int _getS3ObjectFileSize(IotHttpsConnectionHandle_t connHandle,
     IOT_FUNCTION_ENTRY(int, EXIT_SUCCESS);
 
     /* Status of HTTPS Client API. */
-    IotHttpsReturnCode_t httpsClientStatus;
+    IotHttpsReturnCode_t httpsClientStatus = IOT_HTTPS_OK;
     /* The HTTPS request configurations for getting the file size. */
     IotHttpsRequestInfo_t fileSizeReqConfig = { 0 };
     /* Synchronous request specific configurations. */
@@ -507,9 +508,9 @@ static int _getS3ObjectFileSize(IotHttpsConnectionHandle_t connHandle,
        IotHttpsClient_SendSync(). */
     IotHttpsResponseHandle_t fileSizeRespHandle = NULL;
     /* The request user buffer needed to store the internal request context and some headers for the HTTP request. */
-    uint8_t* pFileSizeReqUserBuffer;
+    uint8_t* pFileSizeReqUserBuffer = NULL;
     /* The response user buffer needed to store the internal response context and some headers for the HTTP response. */
-    uint8_t* pFileSizeRespUserBuffer;
+    uint8_t* pFileSizeRespUserBuffer = NULL;
     /* The size of the request user buffer. An additional 256 bytes is added to account for the path length in the HTTP 
        formatted request line (the first line in the request messaGE) and possible extra headers added. */
     const size_t reqUserBufferSize = (const size_t)requestUserBufferMinimumSize + 256;
@@ -519,10 +520,10 @@ static int _getS3ObjectFileSize(IotHttpsConnectionHandle_t connHandle,
     const size_t respUserBufferSize = (const size_t)responseUserBufferMinimumSize + 512;
 
     /* The status of HTTP response for this request. */
-    uint16_t respStatus;
+    uint16_t respStatus = IOT_HTTPS_STATUS_OK;
 
     /* String to store the Content-Range header field value. */
-    char contentRangeValStr[31]; /* length of 2^32 * 2 + strlen(bytes 0-0/) + NULL terminator */
+    char contentRangeValStr[31] = { 0 }; /* length of 2^32 * 2 + strlen(bytes 0-0/) + NULL terminator */
     /* The location of the file size in the contentRangeValStr. */
     char * fileSizeStr = NULL;
 
@@ -606,7 +607,7 @@ static int _getS3ObjectFileSize(IotHttpsConnectionHandle_t connHandle,
     }
 
     /* Get the file size by parsing the "bytes 0-0/FILESIZE" Content-Range header value string. */
-    httpsClientStatus = IotHttpsClient_ReadHeader( fileSizeRespHandle, "Content-Range", contentRangeValStr, contentRangeValStr );
+    httpsClientStatus = IotHttpsClient_ReadHeader( fileSizeRespHandle, "Content-Range", contentRangeValStr, sizeof(contentRangeValStr) );
     if(httpsClientStatus != IOT_HTTPS_OK)
     {
         IotLogError("Could find the Content-Range header in the response. Error code %d",httpsClientStatus);
@@ -743,12 +744,7 @@ int RunHttpsAsyncDemo( bool awsIotMqttMode,
     }
 
     /* Connect to the S3 server. */
-    httpsClientStatus = IotHttpsClient_Connect( &connHandle, &connConfig );
-    if( httpsClientStatus != IOT_HTTPS_OK )
-    {
-        IotLogError( "An error occurred in IotHttpsClient_Connect() with error code: %d", httpsClientStatus );
-        IOT_SET_AND_GOTO_CLEANUP( EXIT_FAILURE );
-    }
+    /* TODO: Fix demo for implicit connection. */
 
     /* Retrieve the size of the file specified in the S3 Presigned URL. */
     if( _getS3ObjectFileSize(connHandle, pPath, pathLen, pAddress, addressLen) != EXIT_SUCCESS )
@@ -790,6 +786,7 @@ int RunHttpsAsyncDemo( bool awsIotMqttMode,
         _pReqConfigs[reqIndex].reqUserBuffer.bufferLen = sizeof( _pReqUserBuffers[reqIndex] );
         _pReqConfigs[reqIndex].respUserBuffer.pBuffer = _pRespUserBuffer[reqIndex];
         _pReqConfigs[reqIndex].respUserBuffer.bufferLen = sizeof( _pRespUserBuffer[reqIndex] );
+        _pReqConfigs[reqIndex].isAsync = true;
         _pReqConfigs[reqIndex].pAsyncInfo = &asyncInfo;
 
         /* Get the Range header value string. */

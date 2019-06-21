@@ -37,6 +37,7 @@
 /* C standard includes. */
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 /*-----------------------------------------------------------*/  
 
@@ -593,7 +594,8 @@ typedef struct IotHttpsConnectionInfo
     /**
      * @brief User buffer to store the internal connection context.
      * 
-     * Please see #IotHttpsUserBuffer_t for more information.
+     * See @ref connectionUserBufferMinimumSize for information about the user buffer configured in 
+     * #IotHttpsConnectionInfo_t.userBuffer needed to create a valid connection handle.
      */
     IotHttpsUserBuffer_t userBuffer;
 
@@ -672,6 +674,13 @@ typedef struct IotHttpsRequestInfo
     IotHttpsUserBuffer_t respUserBuffer;
 
     /**
+     * @brief Indicator if this request is sync or async.
+     * 
+     * Set this to false to use a synchronous request. Set this to true to use an asynchronous request.
+     */
+    bool isAsync;
+    
+    /**
      * @brief Specific information for either a synchronous request or an asynchronous request.
      * 
      * See #IotHttpsAsyncRequestInfo_t for information on the pAsyncInfo.
@@ -685,12 +694,10 @@ typedef struct IotHttpsRequestInfo
     /**
      * @brief HTTPS Client connection configuration.
      * 
-     * If this is set to NULL, then a valid connection handle must be passed into @ref https_client_function_sendsync
-     * or @ref https_client_function_sendasync.
-     * If this is not NULL, then new connection will be made in @ref https_client_function_sendsync
-     * or @ref https_client_function_sendasync.
+     * This is used for an implicit connection in @ref https_client_function_sendsync or 
+     * @ref https_client_function_sendasync.
      */
-    IotHttpsConnectionInfo_t *pConnInfo;
+    IotHttpsConnectionInfo_t *pConnInfo; 
 
     IotHttp2RequestInfo_t *pHttp2Request;       /**< @brief placeholder for HTTP/2 specific request information. */
 } IotHttpsRequestInfo_t;
