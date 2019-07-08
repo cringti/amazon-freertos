@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -158,14 +158,7 @@ const uint_least8_t CryptoCC32XX_count = CC3220SF_LAUNCHXL_CRYPTOCOUNT;
  */
 #include <ti/drivers/dma/UDMACC32XX.h>
 
-#if defined(__TI_COMPILER_VERSION__)
-#pragma DATA_ALIGN(dmaControlTable, 1024)
-#elif defined(__IAR_SYSTEMS_ICC__)
-#pragma data_alignment=1024
-#elif defined(__GNUC__)
-__attribute__ ((aligned (1024)))
-#endif
-static tDMAControlTable dmaControlTable[64];
+static tDMAControlTable dmaControlTable[64] __attribute__ ((aligned (1024)));
 
 /*
  *  ======== dmaErrorFxn ========
@@ -209,6 +202,14 @@ void CC3220SF_LAUNCHXL_initGeneral(void)
 }
 
 /*
+ *  ======== Board_init ========
+ */
+void Board_init(void)
+{
+    CC3220SF_LAUNCHXL_initGeneral();
+}
+
+/*
  *  =============================== GPIO ===============================
  */
 #include <ti/drivers/GPIO.h>
@@ -229,19 +230,31 @@ GPIO_PinConfig gpioPinConfigs[] = {
     /* CC3220SF_LAUNCHXL_GPIO_SW3 */
     GPIOCC32XX_GPIO_22 | GPIO_CFG_INPUT | GPIO_CFG_IN_INT_RISING,
 
+    /* CC3220SF_LAUNCHXL_SPI_MASTER_READY */
+    GPIOCC32XX_GPIO_28 | GPIO_DO_NOT_CONFIG,
+    /* CC3220SF_LAUNCHXL_SPI_SLAVE_READY */
+    GPIOCC32XX_GPIO_12 | GPIO_DO_NOT_CONFIG,
+
     /* output pins */
-    /* CC3220SF_LAUNCHXL_GPIO_LED_D7 */
+    /* CC3220SF_LAUNCHXL_GPIO_LED_D10 */
     GPIOCC32XX_GPIO_09 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
 
     /*
-     *  CC3220SF_LAUNCHXL_GPIO_LED_D5 and CC3220SF_LAUNCHXL_GPIO_LED_D6 are shared with the
+     *  CC3220SF_LAUNCHXL_GPIO_LED_D8 and CC3220SF_LAUNCHXL_GPIO_LED_D9 are shared with the
      *  I2C and PWM peripherals. In order for those examples to work, these
      *  LEDs are taken out of gpioPinConfig[]
      */
-    /* CC3220SF_LAUNCHXL_GPIO_LED_D6 */
+    /* CC3220SF_LAUNCHXL_GPIO_LED_D9 */
     GPIOCC32XX_GPIO_10 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
-    /* CC3220SF_LAUNCHXL_GPIO_LED_D5 */
+    /* CC3220SF_LAUNCHXL_GPIO_LED_D8 */
     GPIOCC32XX_GPIO_11 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
+
+    GPIOCC32XX_GPIO_30 | GPIO_DO_NOT_CONFIG, /* TMP116 EN */
+
+    /* Sharp Display - GPIO configurations will be done in the Display files */
+    GPIOCC32XX_GPIO_12 | GPIO_DO_NOT_CONFIG, /* SPI chip select */
+    GPIOCC32XX_GPIO_06 | GPIO_DO_NOT_CONFIG, /* LCD power control */
+    GPIOCC32XX_GPIO_03 | GPIO_DO_NOT_CONFIG, /*LCD enable */
 };
 
 /*
@@ -253,7 +266,9 @@ GPIO_PinConfig gpioPinConfigs[] = {
  */
 GPIO_CallbackFxn gpioCallbackFunctions[] = {
     NULL,  /* CC3220SF_LAUNCHXL_GPIO_SW2 */
-    NULL   /* CC3220SF_LAUNCHXL_GPIO_SW3 */
+    NULL,  /* CC3220SF_LAUNCHXL_GPIO_SW3 */
+    NULL,  /* CC3220SF_LAUNCHXL_SPI_MASTER_READY */
+    NULL   /* CC3220SF_LAUNCHXL_SPI_SLAVE_READY */
 };
 
 /* The device-specific GPIO_config structure */
@@ -270,11 +285,17 @@ const GPIOCC32XX_Config GPIOCC32XX_config = {
  */
 #include <ti/display/Display.h>
 #include <ti/display/DisplayUart.h>
+#include <ti/display/DisplaySharp.h>
 #define MAXPRINTLEN 1024
 
+/* This value can be changed to 96 for use with the 430BOOST-SHARP96 BoosterPack. */
+#define BOARD_DISPLAY_SHARP_SIZE    128
+
 DisplayUart_Object displayUartObject;
+DisplaySharp_Object displaySharpObject;
 
 static char displayBuf[MAXPRINTLEN];
+static uint_least8_t sharpDisplayBuf[BOARD_DISPLAY_SHARP_SIZE * BOARD_DISPLAY_SHARP_SIZE / 8];
 
 const DisplayUart_HWAttrs displayUartHWAttrs = {
     .uartIdx = 0,
@@ -284,8 +305,24 @@ const DisplayUart_HWAttrs displayUartHWAttrs = {
     .strBufLen = MAXPRINTLEN
 };
 
+const DisplaySharp_HWAttrsV1 displaySharpHWattrs = {
+    .spiIndex    = CC3220SF_LAUNCHXL_SPI1,
+    .csPin       = CC3220SF_LAUNCHXL_LCD_CS,
+    .powerPin    = CC3220SF_LAUNCHXL_LCD_POWER,
+    .enablePin   = CC3220SF_LAUNCHXL_LCD_ENABLE,
+    .pixelWidth  = BOARD_DISPLAY_SHARP_SIZE,
+    .pixelHeight = BOARD_DISPLAY_SHARP_SIZE,
+    .displayBuf  = sharpDisplayBuf,
+};
+
+#ifndef BOARD_DISPLAY_USE_UART
+#define BOARD_DISPLAY_USE_UART 1
+#endif
 #ifndef BOARD_DISPLAY_USE_UART_ANSI
 #define BOARD_DISPLAY_USE_UART_ANSI 0
+#endif
+#ifndef BOARD_DISPLAY_USE_LCD
+#define BOARD_DISPLAY_USE_LCD 0
 #endif
 
 const Display_Config Display_config[] = {
@@ -297,10 +334,19 @@ const Display_Config Display_config[] = {
 #  endif
         .object = &displayUartObject,
         .hwAttrs = &displayUartHWAttrs
-    }
+    },
+#if (BOARD_DISPLAY_USE_LCD)
+    {
+        .fxnTablePtr = &DisplaySharp_fxnTable,
+        .object      = &displaySharpObject,
+        .hwAttrs     = &displaySharpHWattrs
+    },
+#endif
 };
 
 const uint_least8_t Display_count = sizeof(Display_config) / sizeof(Display_Config);
+
+
 
 /*
  *  =============================== I2C ===============================
@@ -334,30 +380,27 @@ const uint_least8_t I2C_count = CC3220SF_LAUNCHXL_I2CCOUNT;
  *  =============================== I2S ===============================
  */
 #include <ti/drivers/I2S.h>
-#include <ti/drivers/i2s/I2SCC32XXDMA.h>
+#include <ti/drivers/i2s/I2SCC32XX.h>
 
-I2SCC32XXDMA_Object i2sCC3220SObjects[CC3220SF_LAUNCHXL_I2SCOUNT];
+I2SCC32XX_Object i2sCC3220SFObjects[CC3220SF_LAUNCHXL_I2SCOUNT];
 
-const I2SCC32XXDMA_HWAttrsV1 i2sCC3220SHWAttrs[CC3220SF_LAUNCHXL_I2SCOUNT] = {
+const I2SCC32XX_HWAttrs i2sCC3220SFHWAttrs[CC3220SF_LAUNCHXL_I2SCOUNT] = {
     {
-        .baseAddr = I2S_BASE,
-        .intNum = INT_I2S,
-        .intPriority = (~0),
-        .rxChannelIndex = UDMA_CH4_I2S_RX,
-        .txChannelIndex = UDMA_CH5_I2S_TX,
-        .xr0Pin = I2SCC32XXDMA_PIN_64_McAXR0,
-        .xr1Pin = I2SCC32XXDMA_PIN_50_McAXR1,
-        .clkxPin = I2SCC32XXDMA_PIN_62_McACLKX,
-        .clkPin = I2SCC32XXDMA_PIN_53_McACLK,
-        .fsxPin = I2SCC32XXDMA_PIN_63_McAFSX,
+      .pinSD1           =  I2SCC32XX_PIN_50_SD1,
+      .pinSD0           =  I2SCC32XX_PIN_64_SD0,
+      .pinSCK           =  I2SCC32XX_PIN_53_SCK,
+      .pinSCKX          =  I2SCC32XX_PIN_UNUSED,
+      .pinWS            =  I2SCC32XX_PIN_63_WS,
+      .rxChannelIndex   =  UDMA_CH4_I2S_RX,
+      .txChannelIndex   =  UDMA_CH5_I2S_TX,
+      .intPriority      =  0x40,
     }
 };
 
 const I2S_Config I2S_config[CC3220SF_LAUNCHXL_I2SCOUNT] = {
     {
-        .fxnTablePtr = &I2SCC32XXDMA_fxnTable,
-        .object = &i2sCC3220SObjects[CC3220SF_LAUNCHXL_I2S0],
-        .hwAttrs = &i2sCC3220SHWAttrs[CC3220SF_LAUNCHXL_I2S0]
+        .object = &i2sCC3220SFObjects[CC3220SF_LAUNCHXL_I2S0],
+        .hwAttrs = &i2sCC3220SFHWAttrs[CC3220SF_LAUNCHXL_I2S0]
     }
 };
 
@@ -540,13 +583,6 @@ const uint_least8_t SD_count = CC3220SF_LAUNCHXL_SDCOUNT;
 
 SPICC32XXDMA_Object spiCC3220SDMAObjects[CC3220SF_LAUNCHXL_SPICOUNT];
 
-#if defined(__TI_COMPILER_VERSION__)
-#pragma DATA_ALIGN(spiCC3220SDMAscratchBuf, 32)
-#elif defined(__IAR_SYSTEMS_ICC__)
-#pragma data_alignment=32
-#elif defined(__GNUC__)
-__attribute__ ((aligned (32)))
-#endif
 uint32_t spiCC3220SDMAscratchBuf[CC3220SF_LAUNCHXL_SPICOUNT];
 
 const SPICC32XXDMA_HWAttrsV1 spiCC3220SDMAHWAttrs[CC3220SF_LAUNCHXL_SPICOUNT] = {
@@ -583,7 +619,7 @@ const SPICC32XXDMA_HWAttrsV1 spiCC3220SDMAHWAttrs[CC3220SF_LAUNCHXL_SPICOUNT] = 
         .defaultTxBufValue = 0,
         .rxChannelIndex = UDMA_CH6_GSPI_RX,
         .txChannelIndex = UDMA_CH7_GSPI_TX,
-        .minDmaTransferSize = 100,
+        .minDmaTransferSize = 10,
         .mosiPin = SPICC32XXDMA_PIN_07_MOSI,
         .misoPin = SPICC32XXDMA_PIN_06_MISO,
         .clkPin = SPICC32XXDMA_PIN_05_CLK,
@@ -786,18 +822,37 @@ const Watchdog_Config Watchdog_config[CC3220SF_LAUNCHXL_WATCHDOGCOUNT] = {
 
 const uint_least8_t Watchdog_count = CC3220SF_LAUNCHXL_WATCHDOGCOUNT;
 
-#if defined(__SF_DEBUG__)
+/*
+ *  ======== Board_debugHeader ========
+ *  This structure prevents the CC32XXSF bootloader from overwriting the
+ *  internal FLASH; this allows us to flash a program that will not be
+ *  overwritten by the bootloader with the encrypted program saved in
+ *  "secure/serial flash".
+ *
+ *  This structure must be placed at the beginning of internal FLASH (so
+ *  the bootloader is able to recognize that it should not overwrite
+ *  internal FLASH).
+ */
+#if defined (__SF_DEBUG__) || defined(__SF_NODEBUG__)
 #if defined(__TI_COMPILER_VERSION__)
-#pragma DATA_SECTION(ulDebugHeader, ".dbghdr")
+#pragma DATA_SECTION(Board_debugHeader, ".dbghdr")
+#pragma RETAIN(Board_debugHeader)
 #elif defined(__IAR_SYSTEMS_ICC__)
-#pragma data_location=".dbghdr"
+#pragma location=".dbghdr"
 #elif defined(__GNUC__)
 __attribute__ ((section (".dbghdr")))
 #endif
-const unsigned long ulDebugHeader[]=
-{
-                0x5AA5A55A,
-                0x000FF800,
-                0xEFA3247D
+#if defined(__SF_DEBUG__)
+const uint32_t Board_debugHeader[] = {
+    0x5AA5A55A,
+    0x000FF800,
+    0xEFA3247D
 };
+#elif defined (__SF_NODEBUG__)
+const uint32_t Board_debugHeader[] = {
+    0xFFFFFFFF,
+    0xFFFFFFFF,
+    0xFFFFFFFF
+};
+#endif
 #endif

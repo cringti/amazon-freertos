@@ -138,39 +138,39 @@
 			<locationURI>BASE_DIR_ROOT/freertos_kernel/include/timers.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/ClockP_freertos.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/ClockP_freertos.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/ClockP_freertos.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/ClockP_freertos.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/DebugP_freertos.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/DebugP_freertos.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/DebugP_freertos.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/DebugP_freertos.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/HwiPCC32XX_freertos.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/HwiPCC32XX_freertos.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/HwiPCC32XX_freertos.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/HwiPCC32XX_freertos.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/MutexP_freertos.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/MutexP_freertos.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/MutexP_freertos.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/MutexP_freertos.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/PowerCC32XX_freertos.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/PowerCC32XX_freertos.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/PowerCC32XX_freertos.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/PowerCC32XX_freertos.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/SemaphoreP_freertos.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/SemaphoreP_freertos.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/SemaphoreP_freertos.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/SemaphoreP_freertos.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/SystemP_freertos.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/SystemP_freertos.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/dpl/SystemP_freertos.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/dpl/SystemP_freertos.c</locationURI>
 		</link>
 		<link>
 			<name>freertos_kernel/portable/MemMang/heap_4.c</name>
@@ -178,106 +178,131 @@
 			<locationURI>BASE_DIR_ROOT/freertos_kernel/portable/MemMang/heap_4.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/startup/startup_cc32xx_ccs.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/startup/startup_cc32xx_ccs.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/kernel/freertos/startup/startup_cc32xx_ccs.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/kernel/freertos/startup/startup_cc32xx_ccs.c</locationURI>
 		</link>
 		
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/clock.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/clock.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/clock.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/clock.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/mqueue.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/mqueue.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/mqueue.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/mqueue.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread_barrier.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_barrier.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread_barrier.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_barrier.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread_cond.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_cond.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread_cond.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_cond.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread_mutex.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_mutex.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/pthread_mutex.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_mutex.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/sched.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/sched.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/sched.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/sched.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/semaphore.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/semaphore.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/semaphore.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/semaphore.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/timer.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/timer.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/timer.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/timer.c</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/sleep.c</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/sleep.c</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/freertos/sleep.c</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/sleep.c</locationURI>
+		</link>
+		<link>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/PTLS.c</name>
+			<type>1</type>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/PTLS.c</locationURI>
+		</link>
+		<link>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/aeabi_portable.c</name>
+			<type>1</type>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/aeabi_portable.c</locationURI>
+		</link>
+		<link>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/memory.c</name>
+			<type>1</type>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/memory.c</locationURI>
+		</link>
+		<link>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_rwlock.c</name>
+			<type>1</type>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/pthread_rwlock.c</locationURI>
+		</link>
+		<link>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/reent.c</name>
+			<type>1</type>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/freertos/reent.c</locationURI>
 		</link>
 
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/errno.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/errno.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/errno.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/errno.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/mqueue.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/mqueue.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/mqueue.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/mqueue.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/pthread.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/pthread.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/pthread.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/pthread.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/sched.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/sched.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/sched.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/sched.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/semaphore.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/semaphore.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/semaphore.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/semaphore.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/signal.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/signal.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/signal.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/signal.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/sys/types.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/sys/types.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/sys/types.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/sys/types.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/time.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/time.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/time.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/time.h</locationURI>
 		</link>
 		<link>
-			<name>vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/unistd.h</name>
+			<name>vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/unistd.h</name>
 			<type>1</type>
-			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v2_10_00_04/source/ti/posix/ccs/unistd.h</locationURI>
+			<locationURI>BASE_DIR_ROOT/vendors/ti/SimpleLink_CC32xx/v3_20_00_06/source/ti/posix/ccs/unistd.h</locationURI>
 		</link>
 
 		<link>

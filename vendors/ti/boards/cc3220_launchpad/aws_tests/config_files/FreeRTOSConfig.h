@@ -57,11 +57,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define configMINIMAL_STACK_SIZE                 ( ( unsigned short ) 256 )
 #define configTOTAL_HEAP_SIZE                    ( ( size_t ) ( 85000 ) )
 #define configMAX_TASK_NAME_LEN                  ( 12 )
+/* Default stack size for TI-POSIX threads (in words) */
+#define configPOSIX_STACK_SIZE          ( ( unsigned short ) 512 )
 #define configUSE_TRACE_FACILITY                 1
 #define configUSE_16_BIT_TICKS                   0
 #define configIDLE_SHOULD_YIELD                  1
 #define configUSE_CO_ROUTINES                    0
 #define configUSE_MUTEXES                        1
+#define configUSE_APPLICATION_TASK_TAG  1  /* Need by POSIX/pthread */
 #define configUSE_RECURSIVE_MUTEXES              1
 #define configUSE_QUEUE_SETS                     0
 #define configUSE_COUNTING_SEMAPHORES            1
@@ -90,13 +93,42 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /* Needed for POSIX/pthread. */
 #define configUSE_APPLICATION_TASK_TAG           1
+#if defined(__TI_COMPILER_VERSION__)
+#include <ti/posix/freertos/PTLS.h>
+#define traceTASK_DELETE( pxTCB ) PTLS_taskDeleteHook( pxTCB )
+#elif defined(__IAR_SYSTEMS_ICC__)
+#ifndef __IAR_SYSTEMS_ASM__
+#include <ti/posix/freertos/Mtx.h>
+#define traceTASK_DELETE( pxTCB ) Mtx_taskDeleteHook( pxTCB )
+#endif
+#endif
 
 /* The function that implements FreeRTOS printf style output, and the macro
  * that maps the configPRINTF() macros to that function. */
 extern void vLoggingPrintf( const char * pcFormat,
                             ... );
 #define configPRINTF( X )    vLoggingPrintf X
+/*
+ *  Enable thread local storage
+ *
+ *  Assign TLS array index ownership here to avoid collisions.
+ *  TLS storage is needed to implement thread-safe errno with
+ *  TI and IAR compilers. With GNU compiler, we enable newlib.
+ */
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 1
+
+#if defined(__TI_COMPILER_VERSION__)
+#define PTLS_TLS_INDEX 0  /* ti.posix.freertos.PTLS */
+#elif defined(__IAR_SYSTEMS_ICC__)
+#define MTX_TLS_INDEX 0  /* ti.posix.freertos.Mtx */
+#endif
+
+#elif defined(__GNUC__)
+/* note: system locks required by newlib are not implemented */
+#define configUSE_NEWLIB_REENTRANT 1
+#endif
 /* Non-format version thread-safe print */
 extern void vLoggingPrint( const char * pcMessage );
 #define configPRINT( X )     vLoggingPrint( X )

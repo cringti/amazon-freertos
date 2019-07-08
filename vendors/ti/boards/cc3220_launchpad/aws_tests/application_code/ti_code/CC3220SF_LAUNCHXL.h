@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Texas Instruments Incorporated
+ * Copyright (c) 2016-2018, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,15 +91,24 @@ typedef enum CC3220SF_LAUNCHXL_CryptoName {
 typedef enum CC3220SF_LAUNCHXL_GPIOName {
     CC3220SF_LAUNCHXL_GPIO_SW2 = 0,
     CC3220SF_LAUNCHXL_GPIO_SW3,
-    CC3220SF_LAUNCHXL_GPIO_LED_D7,
+    CC3220SF_LAUNCHXL_SPI_MASTER_READY,
+    CC3220SF_LAUNCHXL_SPI_SLAVE_READY,
+    CC3220SF_LAUNCHXL_GPIO_LED_D10,
 
     /*
-     *  CC3220SF_LAUNCHXL_GPIO_LED_D5 and CC3220SF_LAUNCHXL_GPIO_LED_D6 are shared with the
+     *  CC3220SF_LAUNCHXL_GPIO_LED_D8 and CC3220SF_LAUNCHXL_GPIO_LED_D9 are shared with the
      *  I2C and PWM peripherals. In order for those examples to work, these
      *  LEDs are  taken out of gpioPinCOnfig[]
      */
-    CC3220SF_LAUNCHXL_GPIO_LED_D6,
-    CC3220SF_LAUNCHXL_GPIO_LED_D5,
+    CC3220SF_LAUNCHXL_GPIO_LED_D9,
+    CC3220SF_LAUNCHXL_GPIO_LED_D8,
+
+    CC3220SF_LAUNCHXL_GPIO_TMP116_EN,
+
+    /* Sharp LCD Pins */
+    CC3220SF_LAUNCHXL_LCD_CS,
+    CC3220SF_LAUNCHXL_LCD_POWER,
+    CC3220SF_LAUNCHXL_LCD_ENABLE,
 
     CC3220SF_LAUNCHXL_GPIOCOUNT
 } CC3220SF_LAUNCHXL_GPIOName;
