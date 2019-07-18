@@ -33,7 +33,7 @@ set(AFR_COMPILER_NO_WARNINGS "--no_warnings" CACHE INTERNAL "")
 # Set up TI compiler default flags and lib settings.
 set(CMAKE_C_FLAGS_INIT "--c99")
 set(CMAKE_C_FLAGS_DEBUG_INIT "-g")
-include_directories(${CMAKE_FIND_ROOT_PATH}/include)
+include_directories(AFTER SYSTEM ${CMAKE_FIND_ROOT_PATH}/include)
 link_directories(${CMAKE_FIND_ROOT_PATH}/lib)
 link_libraries(-llibc.a)
 
@@ -41,4 +41,4 @@ link_libraries(-llibc.a)
 set(CMAKE_C_ARCHIVE_APPEND "<CMAKE_AR> a <TARGET> <LINK_FLAGS> <OBJECTS>")
 
 # Overwrite response file flag for TI's compiler.
-set(CMAKE_C_RESPONSE_FILE_LINK_FLAG "-cmd_file=")
+set(CMAKE_C_RESPONSE_FILE_LINK_FLAG "")

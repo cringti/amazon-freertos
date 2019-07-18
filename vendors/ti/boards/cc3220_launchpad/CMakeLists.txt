@@ -1,7 +1,9 @@
-set(simplelink_dir "${AFR_VENDORS_DIR}/ti/SimpleLink_CC32xx/v2_10_00_04")
+set(simplelink_dir "${AFR_VENDORS_DIR}/ti/SimpleLink_CC32xx/v3_20_00_06")
 set(afr_ports_dir "${CMAKE_CURRENT_LIST_DIR}/ports")
 set(board_demos_dir "${CMAKE_CURRENT_LIST_DIR}/aws_demos")
 set(board_tests_dir "${CMAKE_CURRENT_LIST_DIR}/aws_tests")
+set(posix_dir "${simplelink_dir}/source/ti/posix")
+
 if(AFR_IS_TESTING)
     set(board_dir "${board_tests_dir}")
     set(exe_target aws_tests)
@@ -21,6 +23,48 @@ elseif(${AFR_TOOLCHAIN} STREQUAL "arm-iar")
 elseif(NOT AFR_METADATA_MODE)
     message( FATAL_ERROR "The toolchain is not supported." )
 endif()
+
+set(POSIX_HEADERS
+        "${posix_dir}/ccs/errno.h"
+        "${posix_dir}/ccs/mqueue.h"
+        "${posix_dir}/ccs/pthread.h"
+        "${posix_dir}/ccs/sched.h"
+        "${posix_dir}/ccs/semaphore.h"
+        "${posix_dir}/ccs/signal.h"
+        "${posix_dir}/ccs/time.h"
+        "${posix_dir}/ccs/unistd.h"
+        "${posix_dir}/ccs/sys/types.h"
+)
+
+set(POSIX_SRCS
+        "${posix_dir}/freertos/aeabi_portable.c"
+        "${posix_dir}/freertos/memory.c"
+        "${posix_dir}/freertos/mqueue.c"
+        "${posix_dir}/freertos/pthread.c"
+        "${posix_dir}/freertos/pthread_barrier.c"
+        "${posix_dir}/freertos/pthread_cond.c"
+        "${posix_dir}/freertos/pthread_mutex.c"
+        "${posix_dir}/freertos/pthread_rwlock.c"
+        "${posix_dir}/freertos/PTLS.c"
+        "${posix_dir}/freertos/reent.c"
+        "${posix_dir}/freertos/sched.c"
+        "${posix_dir}/freertos/semaphore.c"
+        "${posix_dir}/freertos/sleep.c"
+        "${posix_dir}/freertos/timer.c"
+        "${posix_dir}/freertos/clock.c"
+)
+
+# Create POSIX library
+add_library(ti_posix INTERFACE)
+target_sources(ti_posix
+    INTERFACE
+        ${POSIX_HEADERS}
+        ${POSIX_SRCS}
+)
+target_include_directories(ti_posix BEFORE
+    INTERFACE
+        "${posix_dir}/ccs"
+)
 
 # -------------------------------------------------------------------------------------------------
 # Amazon FreeRTOS Console metadata
@@ -107,8 +151,7 @@ target_include_directories(
 target_link_libraries(
     AFR::kernel::mcu_port
     INTERFACE
-        AFR::posix
-        AFR::posix_headers
+        ti_posix
 )
 
 # POSIX
@@ -136,7 +179,7 @@ target_sources(
 target_link_libraries(
     AFR::wifi::mcu_port
     INTERFACE
-        AFR::posix::mcu_port
+        ti_posix
         AFR::secure_sockets
 )
 
@@ -189,7 +232,7 @@ target_link_libraries(
     PRIVATE
         AFR::wifi
         AFR::utils
-        AFR::posix::mcu_port
+        ti_posix
         ${link_extra_flags}
 )
 add_custom_command(
