@@ -1,6 +1,7 @@
 set(
     AFR_MANIFEST_SUPPORTED_BOARDS
     cc3220_launchpad
+    cc3235_launchpad
     CACHE INTERNAL "Supported boards list."
 )
 
